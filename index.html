@@ -70,6 +70,43 @@
   font-weight:700;
   white-space:nowrap;
 }
+
+#totalBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #4f46e5;  /* 濃い紫（ブランドカラーっぽい） */
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.8rem;
+  z-index: 10000;
+}
+
+/* 画面下の固定帯（合計＋注意書き） */
+#totalBar{
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  background: #63c3f3; /* 濃紺に変更したい場合はここを変える */
+  color: #fff;
+  text-align: center;
+  padding: 10px 12px;
+  z-index: 10000;
+  /* iPhoneのホームバー安全領域も考慮 */
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 12px rgba(0,0,0,.08);
+}
+#fixedTotal{ font-size: 20px; font-weight: 800; line-height: 1.2; }
+#fixedNote{ font-size: 12px; opacity: .8; margin-top: 4px; }
+
+/* 帯に隠れないよう下余白を確保（お好みで値調整） */
+.container{ padding-bottom: 100px; }
+
+
+
   </style>
 
 
@@ -152,11 +189,8 @@
     </div>
 
     <div class="card">
-      <div class="section-title">6. お見積り内訳</div>
+      <div class="section-title">お見積り内訳</div>
       <div id="breakdown" class="list"></div>
-      <div class="hr"></div>
-      <div class="line total"><span>お支払い合計（税込）</span><span id="total">¥0</span></div>
-      <div class="note" style="margin-top:8px">※ 表示金額は目安です。実際のお会計は当日のご案内に準じます。</div>
     </div>
   </div>
 
@@ -499,7 +533,7 @@ const subtotal = (course.price||0) + shimeiAfter + nyugakuAfter + optionsAfter +
   lines.push(`<div class="hr"></div>`);
 
   els.breakdown.innerHTML = lines.join("");
-  els.total.textContent = yen(subtotal);
+document.getElementById("fixedTotal").textContent  = yen(subtotal);
 
   function line(label, value, muted, bold){
     if (typeof value === "string") {
@@ -515,5 +549,13 @@ const subtotal = (course.price||0) + shimeiAfter + nyugakuAfter + optionsAfter +
 
 init();
 </script>
+
+<!-- ページの最後（</body> の直前あたり）に追加 -->
+<div id="totalBar">
+  <div id="fixedTotal">¥0</div>
+  <div id="fixedNote">※ 表示金額は目安です。実際のお会計は当日のご案内に準じます。</div>
+</div>
+
+
 </body>
 </html>
