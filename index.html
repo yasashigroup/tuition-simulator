@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ちくキュンっ！学園｜授業料シミュレーター</title>
-  <style>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width,initial-scale=1" />
+ <title>ちくキュンっ！学園｜授業料シミュレーター</title>
+ <style>
     :root{--bg:#f8fafc;--card:#ffffff;--text:#0f172a;--muted:#64748b;--accent:#4f46e5;--border:#e5e7eb}
     *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
     .container{max-width:1000px;margin:20px auto;padding:16px}
@@ -107,92 +107,112 @@
 
 
 
-  </style>
+ </style>
 
 
 
 </head>
 <body>
-  <div class="container">
-    <div class="title">ちくキュンっ！学園｜授業料シミュレーター</div>
-    <div class="subtitle">授業タイプ・コース・指名・オプション・割引を選ぶと自動計算します。</div>
-    <div class="notice">本ページの料金は <strong>全て税込表示</strong> です。</div>
-    <div class="notice">ホテル代は別途 <strong>2,000円〜</strong> ほど追加となります。※本シミュレーターの合計には含まれていません。</div>
+ <div class="container">
+ <div class="title">ちくキュンっ！学園｜授業料シミュレーター</div>
+ <div class="subtitle">授業タイプ・コース・指名・オプション・割引を選ぶと自動計算します。</div>
+ <div class="notice">本ページの料金は <strong>全て税込表示</strong> です。</div>
+ <div class="notice">ホテル代は別途 <strong>2,000円〜</strong> ほど追加となります。※本シミュレーターの合計には含まれていません。</div>
 
-      <div class="card">
-        <div class="section-title">1. 授業タイプ</div>
+ <div class="card">
+ <div class="section-title">1. 授業タイプ</div>
 
-        <label>授業タイプ</label>
-        <div class="wrap" id="classTypeWrap">
-          <label class="pill"><input type="radio" name="ctype" value="basic" checked> 基本授業（女子生徒/先生 1人）</label>
-          <label class="pill"><input type="radio" name="ctype" value="duo"> 合同授業・3P（女子生徒/先生 2人）</label>
-        </div>
+ <label>授業タイプ</label>
+ <div class="wrap" id="classTypeWrap">
+ <label class="pill"><input type="radio" name="ctype" value="basic" checked> 基本授業（女子生徒/先生 1人）</label>
+ <label class="pill"><input type="radio" name="ctype" value="duo"> 合同授業・3P（女子生徒/先生 2人）</label>
+ </div>
 
-        <div style="margin-top:12px">
-          <label>授業時間</label>
-          <select id="course"></select>
-          <div class="hint">※ 記載分数以上の授業も対応可能です。ご予約時にご相談ください。</div>
-        </div>
-      </div>
+ <div style="margin-top:12px">
+ <label>授業時間</label>
+ <select id="course"></select>
+ <div class="hint">※ 記載分数以上の授業も対応可能です。ご予約時にご相談ください。</div>
+ </div>
+ </div>
 
 <div class="card">
-  <div class="section-title">2. 指名・入学金</div>
-  <div class="row">
-    <div style="flex:1">
-      <label>指名種別</label>
-      <select id="shimei">
-        <option value="shimei">指名（¥1,100）</option>
-        <option value="honshimei">本指名（会うのが2回目の場合）（¥2,200）</option>
-      </select>
-    </div>
+ <div class="section-title">2. 指名・入学金</div>
+ <div class="row">
+ <div style="flex:1">
+ <label>指名種別</label>
+ <select id="shimei">
+ <option value="shimei">指名（¥1,100）</option>
+ <option value="honshimei">本指名（会うのが2回目の場合）（¥2,200）</option>
+ </select>
+ </div>
 
-    <div style="flex:1">
-      <label>特別指名料</label>
-      <select id="tokubetsu">
-        <option value="0" selected>なし（¥0）</option>
-        <option value="1100">特別指名料（¥1,100）</option>
-        <option value="2200">特別指名料（¥2,200）</option>
-      </select>
-    </div>
-  </div>
+ <div style="flex:1">
+ <label>特別指名料</label>
+ <select id="tokubetsu">
+ <option value="0" selected>なし（¥0）</option>
+ <option value="1100">特別指名料（¥1,100）</option>
+ <option value="2200">特別指名料（¥2,200）</option>
+ </select>
+ </div>
+ </div>
 
-  <div style="margin-top:12px">
-    <label>入学金</label>
-    <select id="nyugaku">
-      <option value="1100">学園の登校が初めての方（入学金¥1,100）</option>
-      <option value="0">学園の登校をしたことがある方（¥0）</option>
-    </select>
-  </div>
+<div class="row" id="rowNomination2" style="display:none">
+ <div style="flex:1">
+ <label>指名種別</label>
+ <select id="shimei2">
+ <option value="shimei">指名（¥1,100）</option>
+ <option value="honshimei">本指名（会うのが2回目の場合）（¥2,200）</option>
+ </select>
+ </div>
+
+ <div style="flex:1">
+ <label>特別指名料</label>
+ <select id="tokubetsu2">
+ <option value="0" selected>なし（¥0）</option>
+ <option value="1100">特別指名料（¥1,100）</option>
+ <option value="2200">特別指名料（¥2,200）</option>
+ </select>
+ </div>
+ </div>
+
+ <div style="margin-top:12px">
+ <label>入学金</label>
+ <select id="nyugaku">
+ <option value="1100">学園の登校が初めての方（入学金¥1,100）</option>
+ <option value="0">学園の登校をしたことがある方（¥0）</option>
+ </select>
+ </div>
 </div>
-      
-    
-          <div class="card">
-        <div class="section-title">3.オプション（複数選択可）</div>
-        <div style="margin-top:12px">
-          <div id="options"></div>
-          <div class="hint" style="margin-top:8px">※ キャストによって対応できないオプションもあります</div>
-          <div class="hint" style="margin-top:8px">※ ★のついているオプションは事前予約必須となりますので、ご予約の際に必ずお申し付けください</div>
-        <div class="hint" style="margin-top:8px">※ ご自分のおもちゃの持ち込みも1点毎にオプション料金は発生します</div>
-        </div>
-      </div>
-        
+ 
+ 
+ <div class="card">
+ <div class="section-title">3.オプション（複数選択可）</div>
+ <div style="margin-top:12px">
+ <div id="options"></div>
+ <div class="hint" style="margin-top:8px">※ キャストによって対応できないオプションもあります</div>
+ <div class="hint" style="margin-top:8px">※ ★のついているオプションは事前予約必須となりますので、ご予約の際に必ずお申し付けください</div>
+ <div class="hint" style="margin-top:8px">※ ご自分のおもちゃの持ち込みも1点毎にオプション料金は発生します</div>
+ </div>
+ </div>
+ 
 
-    <div class="card">
-      <div class="section-title">4. 割引（いずれか1つ選択）</div>
-      <div id="discounts" class="wrap"></div>
-      <div class="hint" style="margin-top:8px">※ 割引は併用不可です。条件に合わない場合は自動的に適用外となります。</div>
-    </div>
+ <div class="card">
+ <div class="section-title">4. 割引（いずれか1つ選択）</div>
+ <div id="discounts" class="wrap"></div>
+<div id="duoNewcomer" class="wrap" style="margin-top:8px"></div>
+ <div class="hint" style="margin-top:8px">※ 割引は併用不可です。条件に合わない場合は自動的に適用外となります。</div>
+ </div>
 
-    <div class="card">
-      <div class="section-title">5. 基本プレイ</div>
-      <div id="plays" class="plays"></div>
-    </div>
+ <div class="card">
+ <div class="section-title">5. 基本プレイ</div>
+ <div id="plays" class="plays"></div>
+ </div>
 
-    <div class="card">
-      <div class="section-title">お見積り内訳</div>
-      <div id="breakdown" class="list"></div>
-    </div>
-  </div>
+ <div class="card">
+ <div class="section-title">お見積り内訳</div>
+ <div id="breakdown" class="list"></div>
+ </div>
+ </div>
 
 <script>
 const CONFIG = {
@@ -337,6 +357,18 @@ const OPTION_LIST = [
 ];
 
 
+// セットが内包する単品のマッピング
+const SET_INCLUDES = {
+  // 君の記憶を持ち帰りセット
+  opt1: ["opt11", "opt7", "opt32", "opt33"],
+  // 青春の三大タブーセット
+  opt2: ["opt35", "opt40", "opt22"],
+  // 放課後のイタズラセット
+  opt3: ["opt34", "opt38", "opt26"],
+};
+
+
+
 // 基本プレイ（編集OK）
 const BASIC_PLAYS = [
   "男子生徒のオナニー鑑賞",
@@ -361,12 +393,17 @@ const els = {
   breakdown: document.getElementById("breakdown"),
   total: document.getElementById("total"),
   tokubetsu: document.getElementById("tokubetsu"), 
+  shimei2: document.getElementById("shimei2"),
+  tokubetsu2: document.getElementById("tokubetsu2"),
+  duoNew: document.getElementById("duoNewcomer"),
 };
 
 const state = {
   classType: "basic",
   optionState: {}, // id -> bool
   discountId: "none",
+  newcomer1: false,
+  newcomer2: false,
 };
 
 function rebuildCourseOptions(){
@@ -422,7 +459,9 @@ function rebuildOptionCheckboxes(){
 
 function buildDiscountRadios(){
   els.discounts.innerHTML = "";
+  const isDuo = state.classType === "duo";
   DISCOUNTS.forEach(d=>{
+    if (isDuo && d.id === "newcomer_nomination_1100off") return; // duoでは個別チェックボックスに置換
     const label = document.createElement("label");
     label.className = "tag";
     const input = document.createElement("input");
@@ -434,6 +473,44 @@ function buildDiscountRadios(){
     label.appendChild(input); label.appendChild(text);
     els.discounts.appendChild(label);
   });
+
+  // --- 同期：新人チェックと「割引なし」ラジオの選択状態を同期 ---
+  const noneRadio = document.querySelector('input[name="disc"][value="none"]');
+  const syncNoneRadio = () => {
+    if (!noneRadio) return;
+    // 3P時：新人チェックが1つでもONなら、視覚的に「割引なし」を外す
+    if (isDuo && (state.newcomer1 || state.newcomer2)) {
+      noneRadio.checked = false;
+    } else {
+      // 新人チェックが両方OFFのときは、state.discountIdに合わせる
+      noneRadio.checked = (state.discountId === "none");
+    }
+  };
+  syncNoneRadio();
+
+
+  // duo時の新人割引（先生別）のチェックボックス
+  els.duoNew.innerHTML = "";
+  if (isDuo){
+    const makeNewCb = (idx)=>{
+      const label = document.createElement("label");
+      label.className = "tag";
+      const input = document.createElement("input");
+      input.type = "checkbox"; input.value = idx;
+      input.checked = idx===1 ? state.newcomer1 : state.newcomer2;
+      input.addEventListener("change", ()=>{
+        if (idx===1) state.newcomer1 = input.checked; else state.newcomer2 = input.checked;
+        render();
+        syncNoneRadio();
+      });
+      const text = document.createElement("span");
+      text.innerHTML = `<strong>新人指名料1,100円OFF（教師${idx}/生徒${idx}）</strong><br><span class="hint">※ 本指名は対象外・教師${idx}/生徒${idx}が指名（1,100円）の場合のみ</span>`;
+      label.appendChild(input); label.appendChild(text);
+      return label;
+    };
+    els.duoNew.appendChild(makeNewCb(1));
+    els.duoNew.appendChild(makeNewCb(2));
+  }
 }
 
 function buildPlays(){
@@ -450,6 +527,8 @@ function init(){
     r.addEventListener("change",(e)=>{
       state.classType = e.target.value;
       rebuildCourseOptions();
+      buildDiscountRadios();
+      buildPlays();
       render();
     });
   });
@@ -459,41 +538,69 @@ function init(){
   buildDiscountRadios();
   buildPlays();
 
-[els.course, els.shimei, els.nyugaku, els.tokubetsu]
+[els.course, els.shimei, els.nyugaku, els.tokubetsu, els.shimei2, els.tokubetsu2]
   .forEach(el => el.addEventListener("input", render));
-
-
-  render();
+render();
 }
 
 function render(){
   const courseList = CONFIG.courses[state.classType];
   const course = courseList.find(c=>c.id === els.course.value) || courseList[2];
 
-  const shimeiKey = els.shimei.value;
-  const shimeiFee = CONFIG.shimeiFees[shimeiKey] || 0;
+  const isDuo = state.classType === "duo";
+  // show/hide second nomination row
+  const row2 = document.getElementById("rowNomination2");
+  if (row2) row2.style.display = isDuo ? "" : "none";
+  if (!isDuo){ state.newcomer1 = false; state.newcomer2 = false; } else { if (state.discountId === "newcomer_nomination_1100off") state.discountId = "none"; } // 基本授業では新人個別割引をリセット
+
+  // 指名種別（先生1/先生2）
+  const shimeiKey1 = els.shimei.value;
+  const shimeiKey2 = isDuo ? els.shimei2.value : "none";
+  const shimeiFee1 = CONFIG.shimeiFees[shimeiKey1] || 0;
+  const shimeiFee2 = CONFIG.shimeiFees[shimeiKey2] || 0;
 
   const nyugakuFee = Math.max(0, Number(els.nyugaku.value)||0);
-  const tokubetsuFee = Math.max(0, Number(els.tokubetsu.value)||0);
 
+  // 特別指名料（先生1/先生2）
+  const tokubetsuFee1 = Math.max(0, Number(els.tokubetsu.value)||0);
+  const tokubetsuFee2 = isDuo ? Math.max(0, Number(els.tokubetsu2.value)||0) : 0;
+  const tokubetsuTotal = tokubetsuFee1 + tokubetsuFee2;// セット重複を除外したオプション合計
+  const selectedSetIds = OPTION_LIST
+    .filter(o => o.isSet && state.optionState[o.id])
+    .map(o => o.id);
+  const coveredSingles = new Set(selectedSetIds.flatMap(id => (SET_INCLUDES[id] || [])));
 
   let optionsTotal = 0;
-  OPTION_LIST.forEach(o=>{ optionsTotal += state.optionState[o.id] ? o.price : 0; });
+  OPTION_LIST.forEach(o => {
+    if (!state.optionState[o.id]) return;
+    if (o.isSet) {
+      optionsTotal += o.price;
+    } else {
+      if (!coveredSingles.has(o.id)) optionsTotal += o.price;
+    }
+  });
 
   // discount apply
-  const ctx = { shimeiKey, shimeiFee, nyugakuFee, optionsTotal };
+  const shimeiKeyCombined = (shimeiKey1 === "honshimei" || shimeiKey2 === "honshimei")
+    ? "honshimei" : ((shimeiKey1 !== "none" || shimeiKey2 !== "none") ? "shimei" : "none");
+  const shimeiFeeCombined = shimeiFee1 + shimeiFee2;
+
+  const ctx = { shimeiKey: shimeiKeyCombined, shimeiFee: shimeiFeeCombined, nyugakuFee, optionsTotal };
   const disc = DISCOUNTS.find(d=>d.id===state.discountId) || DISCOUNTS[0];
   const res = disc.apply(ctx);
 
-  const shimeiAfter = Math.max(0, shimeiFee - (res.shimeiOff || 0));
+  // duo時の新人個別割引（本指名は対象外／指名のみ対象）
+  const extraOff1 = (state.classType==="duo" && state.newcomer1 && shimeiKey1==="shimei") ? Math.min(1100, shimeiFee1) : 0;
+  const extraOff2 = (state.classType==="duo" && state.newcomer2 && shimeiKey2==="shimei") ? Math.min(1100, shimeiFee2) : 0;
+
+  const totalShimeiOff = Math.min(shimeiFeeCombined, (res.shimeiOff || 0) + extraOff1 + extraOff2);
+  const shimeiAfterCombined = Math.max(0, shimeiFeeCombined - totalShimeiOff);
   // options discount applies up to optionsTotal
   const optionsAfter = Math.max(0, optionsTotal - (res.optionsOff || 0));
   const nyugakuAfter = Math.max(0, nyugakuFee - (res.nyugakuOff || 0));
 
-const subtotal = (course.price||0) + shimeiAfter + nyugakuAfter + optionsAfter + tokubetsuFee;
-
-
-  // breakdown
+  const subtotal = (course.price||0) + shimeiAfterCombined + nyugakuAfter + optionsAfter + tokubetsuTotal;
+// breakdown
   const lines = [];
   lines.push(line(`授業タイプ`, state.classType==="basic" ? "基本授業（1人）" : "合同授業（3P）"));
   lines.push(line(`${course.label} 授業料`, course.price, false, true));
@@ -504,19 +611,33 @@ const subtotal = (course.price||0) + shimeiAfter + nyugakuAfter + optionsAfter +
     if (d>0) lines.push(discountLine("入学金割引", d));
   }
 
-  if (shimeiKey!=="none"){
-    const d = shimeiFee - shimeiAfter;
-    lines.push(line("指名料", shimeiAfter));
-    if (d>0) lines.push(discountLine("指名料割引", d));
-  }
+  // 指名料（先生別）
+  if (shimeiFee1 > 0) lines.push(line("指名料（教師1/生徒1）", shimeiFee1));
+  if (shimeiFee2 > 0) lines.push(line("指名料（教師2/生徒2）", shimeiFee2));
 
-  if (tokubetsuFee > 0) {
-  lines.push(line("特別指名料", tokubetsuFee));
-}
+  // 新人指名割引（先生別）
+  if (extraOff1 > 0) lines.push(discountLine("新人指名料割引（教師1/生徒1）", extraOff1));
+  if (extraOff2 > 0) lines.push(discountLine("新人指名料割引（教師2/生徒2）", extraOff2));
 
-  // options
-  OPTION_LIST.forEach(o=>{
-    if (state.optionState[o.id]) lines.push(line(o.label, o.price));
+  // その他の指名割引（ラジオ選択で発生した分）
+  const otherShimeiDisc = Math.max(0, (res.shimeiOff || 0) - (extraOff1 + extraOff2));
+  if (otherShimeiDisc > 0) lines.push(discountLine("指名料割引", otherShimeiDisc));
+
+  // 特別指名料（先生別）
+  if (tokubetsuFee1 > 0) lines.push(line("特別指名料（教師1/生徒1）", tokubetsuFee1));
+  if (tokubetsuFee2 > 0) lines.push(line("特別指名料（教師2/生徒2）", tokubetsuFee2));
+// options（セット重複を考慮して表示）
+  OPTION_LIST.forEach(o => {
+    if (!state.optionState[o.id]) return;
+    if (o.isSet) {
+      lines.push(line(o.label, o.price));
+    } else {
+      if (coveredSingles.has(o.id)) {
+        lines.push(line(`${o.label}（セットに含む）`, 0, true));
+      } else {
+        lines.push(line(o.label, o.price));
+      }
+    }
   });
   const optDiscount = optionsTotal - optionsAfter;
   if (optDiscount>0) lines.push(discountLine("オプション割引", optDiscount));
@@ -552,8 +673,8 @@ init();
 
 <!-- ページの最後（</body> の直前あたり）に追加 -->
 <div id="totalBar">
-  <div id="fixedTotal">¥0</div>
-  <div id="fixedNote">※ 表示金額は目安です。実際のお会計は当日のご案内に準じます。</div>
+ <div id="fixedTotal">¥0</div>
+ <div id="fixedNote">※ 表示金額は目安です。実際のお会計は当日のご案内に準じます。</div>
 </div>
 
 
