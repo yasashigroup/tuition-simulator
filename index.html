@@ -27,6 +27,15 @@
     .row + .row{margin-top:8px}
     .option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px dashed var(--border)}
     .option:first-of-type{border-top:none}
+
+    /* 価格帯ごとの淡い背景色（オプション行） */
+    .option.price-550  { background: rgba(16, 185, 129, 0.18);  border-radius:12px; padding:10px 12px; }
+    .option.price-1100 { background: rgba(139, 92, 246, 0.18); border-radius:12px; padding:10px 12px; }
+    .option.price-2200 { background: rgba(249, 115, 22, 0.18); border-radius:12px; padding:10px 12px; }
+    .option.price-3300 { background: rgba(6, 182, 212, 0.08); border-radius:12px; padding:10px 12px; }
+    .option.price-5500 { background: rgba(236, 72, 153, 0.18);  border-radius:12px; padding:10px 12px; }
+    .option.is-set { outline: 1px solid rgba(180,83,9,.25); }
+
     .hint{font-size:12px;color:var(--muted)}
     .switch{display:flex;gap:8px;align-items:center}
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:#fff;cursor:pointer;font-weight:600}
@@ -132,6 +141,7 @@
  <label>授業時間</label>
  <select id="course"></select>
  <div class="hint">※ 記載分数以上の授業も対応可能です。ご予約時にご相談ください。</div>
+ <div class="hint">※ 120分を超えるご利用は、15分ごとに\3,300(基本授業)または\6,600(合同授業)が加算となります。</div>
  </div>
  </div>
 
@@ -191,7 +201,11 @@
  <div id="options"></div>
  <div class="hint" style="margin-top:8px">※ キャストによって対応できないオプションもあります</div>
  <div class="hint" style="margin-top:8px">※ ★のついているオプションは事前予約必須となりますので、ご予約の際に必ずお申し付けください</div>
+ <div class="hint" style="margin-top:8px">※ ★のついていないオプションは当日生徒・教師にお会いしてからでも追加できます</div>
+ <div class="hint" style="margin-top:8px">※ アナルおもちゃは小型ローター・アナルパール・アナルディルド・エネマグラの準備があります</div>
  <div class="hint" style="margin-top:8px">※ ご自分のおもちゃの持ち込みも1点毎にオプション料金は発生します</div>
+ <div class="hint" style="margin-top:8px">※ 混浴は通常スクール水着でのご案内となりますが、オプション「オールヌード」をお選びいただくことで水着なしでの入浴が可能です。なお、浴槽のあるホテルでのみの対応となります</div>
+ <div class="hint" style="margin-top:8px">※ 授業の撮影は撮影前にお約束事のサインを頂いております。</div>
  </div>
  </div>
  
@@ -218,6 +232,7 @@
 const CONFIG = {
   courses: {
     basic: [
+      { id: "15", label: "15分(お試し)", price: 3300 }, 
       { id: "30", label: "30分", price: 5500 },
       { id: "45", label: "45分", price: 7700 },
       { id: "60", label: "60分", price: 9900 },
@@ -253,7 +268,7 @@ const DISCOUNTS = [
   },
   {
     id: "newcomer_nomination_1100off",
-    label: "新人指名料1,100円OFF（入学から1ヶ月以内の女子生徒・教師限定）",
+    label: "新人指名料1,100円OFF（若葉マークの女子生徒・教師限定）",
     note: "※ 本指名は適用不可 ※ 指名料1,100円無料",
     apply: (ctx) => {
       const isHon = ctx.shimeiKey === "honshimei";
@@ -276,17 +291,17 @@ const DISCOUNTS = [
       return { shimeiOff, nyugakuOff, optionsOff: 0, ineligible: false, reason: "" };
     },
   },
-  {
-    id: "first_day_cast_3300off",
-    label: "入学初日 3,300円OFF（入学初日の女子生徒・教師限定）",
-    note: "※ 口コミ＋Discord加入必須。※ 指名料1,100円無料＋オプション2,200円分無料",
-    apply: (ctx) => {
-      const shimeiOff = Math.min(1100, ctx.shimeiFee);
-      // optionsOff up to 2200 against options total
-      const optionsOff = Math.min(2200, ctx.optionsTotal);
-      return { shimeiOff, nyugakuOff: 0, optionsOff, ineligible: false, reason: "" };
-    },
-  },
+//  {
+//    id: "first_day_cast_3300off",
+//    label: "入学初日 3,300円OFF（入学初日の女子生徒・教師限定）",
+//    note: "※ 口コミ＋Discord加入必須。※ 指名料1,100円無料＋オプション2,200円分無料",
+//    apply: (ctx) => {
+//      const shimeiOff = Math.min(1100, ctx.shimeiFee);
+//      // optionsOff up to 2200 against options total
+//      const optionsOff = Math.min(2200, ctx.optionsTotal);
+//      return { shimeiOff, nyugakuOff: 0, optionsOff, ineligible: false, reason: "" };
+//    },
+//  },
 ];
 
 // オプションリスト（必要なものだけ）
@@ -299,79 +314,108 @@ const OPTION_LIST = [
     note: "足なで・バストタッチ・お尻さわりが含まれます" },
   { id: "opt3", label: "放課後のイタズラセット", price: 3300, isSet: true, savings: 1100,
     note: "アナルおもちゃ・ペニバン・指アナルが含まれます" },
+  { id: "opt4", label: "理科の実験セット", price: 2200, isSet: true, savings: 550,
+    note: "乳首ローター・乳首クリップ・乳首ポンプ・乳首舐めおもちゃが含まれます" },
+  { id: "opt5", label: "ずっと君を感じていたいセット", price: 5500, isSet: true, savings: 1100,
+    note: "オナホすまた・オールヌードが含まれます" },
 
   // 550円
-  { id: "opt4", label: "ビンタ", price: 550 },
-  { id: "opt5", label: "蹴り", price: 550 },
-  { id: "opt6", label: "目隠し", price: 550 },
-  { id: "opt7", label: "匂い嗅ぎ", price: 550 },
-  { id: "opt8", label: "踏みつけ", price: 550 },
-  { id: "opt9", label: "足コキ", price: 550 },
-  { id: "opt10", label: "拘束テープ", price: 550 },
-  { id: "opt11", label: "唾たらし", price: 550 },
-  { id: "opt12", label: "くすぐり", price: 550 },
-  { id: "opt13", label: "手枷＋足枷", price: 550 },
-  { id: "opt14", label: "乳首ローター", price: 550 },
-  { id: "opt15", label: "乳首クリップ", price: 550 },
-  { id: "opt16", label: "ストーリープレイ", price: 550 },
+  { id: "opt6", label: "ビンタ", price: 550 },
+  { id: "opt7", label: "蹴り", price: 550 },
+  { id: "opt8", label: "目隠し", price: 550 },
+  { id: "opt9", label: "匂い嗅ぎ", price: 550 },
+  { id: "opt10", label: "踏みつけ", price: 550 },
+  { id: "opt11", label: "足コキ", price: 550 },
+  { id: "opt12", label: "拘束テープ", price: 550 },
+  { id: "opt13", label: "唾たらし", price: 550 },
+  { id: "opt14", label: "くすぐり", price: 550 },
+  { id: "opt15", label: "手枷＋足枷", price: 550 },
+  { id: "opt16", label: "乳首ローター", price: 550 },
+  { id: "opt17", label: "乳首クリップ", price: 550 },
+  { id: "opt18", label: "ストーリープレイ", price: 550 },
+  { id: "opt19", label: "乳首吸引ポンプ", price: 550 },
+  { id: "opt20", label: "ヘアチェンジ", price: 550 },
+  { id: "opt21", label: "落書き", price: 550 },
+  { id: "opt22", label: "スパンキング", price: 550 },
+  { id: "opt23", label: "口枷", price: 550 },
+  { id: "opt24", label: "首輪", price: 550 },
+  { id: "opt25", label: "フィニッシュ体位リクエスト", price: 550 },
+  { id: "opt26", label: "お部屋で一緒に飲食/ゲーム/動画鑑賞", price: 550 },
+  { id: "opt27", label: "着衣乳首舐め", price: 550 },
+  { id: "opt28", label: "肩揉み", price: 550 },
 
   // 1100円
-  { id: "opt17", label: "上半身ブラ", price: 1100 },
-  { id: "opt18", label: "下半身パンツ", price: 1100 },
-  { id: "opt19", label: "ストッキング着用(持ち帰りOK)", price: 1100 },
-  { id: "opt20", label: "★コスプレ(1着)", price: 1100 },
-  { id: "opt21", label: "ノーブラ", price: 1100 },
-  { id: "opt22", label: "お尻さわり", price: 1100 },
-  { id: "opt23", label: "抱きつき", price: 1100 },
-  { id: "opt24", label: "男の潮吹き", price: 1100 },
-  { id: "opt25", label: "亀頭責め（ガーゼorストッキングorそのまま）", price: 1100 },
-  { id: "opt26", label: "指アナル", price: 1100 },
-  { id: "opt27", label: "★剃毛", price: 1100 },
-  { id: "opt28", label: "★マッサージ", price: 1100 },
-  { id: "opt29", label: "おっぱい顔面騎乗", price: 1100 },
-  { id: "opt30", label: "耳舐め", price: 1100 },
-  { id: "opt31", label: "咀嚼(食品はご持参ください)", price: 1100 },
-  { id: "opt32", label: "パンツ持ち帰り", price: 1100 },
-  { id: "opt33", label: "唾持ち帰り(容器付き)", price: 1100 },
-  { id: "opt34", label: "アナルおもちゃ（アナルローター、パール、ディルド）", price: 1100 },
-  { id: "opt35", label: "足なで", price: 1100 },
+  { id: "opt29", label: "乳首舐めおもちゃ", price: 1100 },
+  { id: "opt30", label: "噛みつき", price: 1100 },
+  { id: "opt31", label: "膝枕", price: 1100 },
+  { id: "opt32", label: "バックハグ", price: 1100 },
+  { id: "opt33", label: "上半身ブラ", price: 1100 },
+  { id: "opt34", label: "下半身パンツ", price: 1100 },
+  { id: "opt35", label: "ストッキング着用(持ち帰りOK)", price: 1100 },
+  { id: "opt36", label: "★コスプレ(1着)", price: 1100 },
+  { id: "opt37", label: "ノーブラ", price: 1100 },
+  { id: "opt38", label: "お尻さわり", price: 1100 },
+  { id: "opt39", label: "抱きつき", price: 1100 },
+  { id: "opt40", label: "男の潮吹き", price: 1100 },
+  { id: "opt41", label: "亀頭責め（ガーゼorストッキングorそのまま）", price: 1100 },
+  { id: "opt42", label: "指アナル", price: 1100 },
+  { id: "opt43", label: "★剃毛", price: 1100 },
+  { id: "opt44", label: "★マッサージ", price: 1100 },
+  { id: "opt45", label: "おっぱい顔面騎乗", price: 1100 },
+  { id: "opt46", label: "耳舐め", price: 1100 },
+  { id: "opt47", label: "咀嚼(食品はご持参ください)", price: 1100 },
+  { id: "opt48", label: "パンツ持ち帰り", price: 1100 },
+  { id: "opt49", label: "唾持ち帰り(容器付き)", price: 1100 },
+  { id: "opt50", label: "アナルおもちゃ（１個）", price: 1100 },
+  { id: "opt51", label: "足なで", price: 1100 },
 
   // 2200円
-  { id: "opt36", label: "顔面騎乗", price: 2200 },
-  { id: "opt37", label: "オールランジェリー", price: 2200 },
-  { id: "opt38", label: "ペニバン", price: 2200 },
-  { id: "opt39", label: "ノーパン", price: 2200 },
-  { id: "opt40", label: "バストタッチ", price: 2200 },
-  { id: "opt41", label: "トップレス", price: 2200 },
-  { id: "opt42", label: "聖水", price: 2200 },
-  { id: "opt43", label: "上半身リップ", price: 2200 },
-  { id: "opt44", label: "顔舐め(男性への)", price: 2200 },
-  { id: "opt45", label: "浣腸(男子生徒の)", price: 2200 },
-  { id: "opt46", label: "アナルフィスト", price: 2200 },
-  { id: "opt47", label: "★混浴(通常水着)", price: 2200 },
-  { id: "opt48", label: "足舐め（女性への）", price: 2200 },
-  { id: "opt49", label: "★男性用コスプレ(L,XL)", price: 2200 },
+  { id: "opt52", label: "高級乳首責めグッズ「U.F.O」", price: 2200 },
+  { id: "opt53", label: "男子生徒の写真や動画撮影（女性：手のみ・声NG）", price: 2200 },
+  { id: "opt54", label: "顔面騎乗", price: 2200 },
+  { id: "opt55", label: "オールランジェリー", price: 2200 },
+  { id: "opt56", label: "ペニバン", price: 2200 },
+  { id: "opt57", label: "ノーパン", price: 2200 },
+  { id: "opt58", label: "バストタッチ", price: 2200 },
+  { id: "opt59", label: "トップレス", price: 2200 },
+  { id: "opt60", label: "聖水", price: 2200 },
+  { id: "opt61", label: "上半身リップ", price: 2200 },
+  { id: "opt62", label: "顔舐め(男性への)", price: 2200 },
+  { id: "opt63", label: "浣腸(男子生徒の)", price: 2200 },
+  { id: "opt64", label: "アナルフィスト", price: 2200 },
+  { id: "opt65", label: "★混浴(スクール水着)", price: 2200 },
+  { id: "opt66", label: "足舐め（女性への）", price: 2200 },
+  { id: "opt67", label: "★男性用コスプレ(L,XL)", price: 2200 },
+  { id: "optDD", label: "放課後デートコース", price: 2200 },
 
   // 3300円
-  { id: "opt50", label: "オールヌード", price: 3300 },
-];
+  { id: "opt68", label: "男子生徒の写真や動画撮影（女性：手のみ・声OK）", price: 3300 },
+  { id: "opt69", label: "オナホすまた", price: 3300 },
+  { id: "opt70", label: "スキンフェラ", price: 3300 },
+  { id: "opt71", label: "オールヌード", price: 3300 },
 
+  // 5500円
+  { id: "opt72", label: "授業の撮影（女性：基本マスク有）", price: 5500 },
+
+];
 
 // セットが内包する単品のマッピング
 const SET_INCLUDES = {
   // 君の記憶を持ち帰りセット
-  opt1: ["opt11", "opt7", "opt32", "opt33"],
+  opt1: ["opt9", "opt13", "opt48", "opt49"],
   // 青春の三大タブーセット
-  opt2: ["opt35", "opt40", "opt22"],
+  opt2: ["opt38", "opt51", "opt58"],
   // 放課後のイタズラセット
-  opt3: ["opt34", "opt38", "opt26"],
+  opt3: ["opt42", "opt50", "opt56"],
+  // 理科の実験セット
+  opt4: ["opt16", "opt17", "opt19", "opt29"],
+  // ずっと君を感じていたいセット
+  opt5: ["opt69", "opt71"],
 };
-
-
 
 // 基本プレイ（編集OK）
 const BASIC_PLAYS = [
-  "男子生徒のオナニー鑑賞",
+  //"男子生徒のオナニー鑑賞",
   "制服で手コキ",
   "時間内無制限発射",
   "乳首舐め",
@@ -424,7 +468,7 @@ function rebuildOptionCheckboxes(){
   if (hasSet){
     const banner = document.createElement("div");
     banner.className = "options-banner";
-    banner.innerHTML = `📣 セットオプションは <strong>単品合計より¥1,100お得！</strong>`;
+    banner.innerHTML = `📣 セットオプションは <strong>単品合計よりお得！</strong>`;
     els.options.appendChild(banner);
   }
 
@@ -432,6 +476,9 @@ function rebuildOptionCheckboxes(){
   OPTION_LIST.forEach(o=>{
     const row = document.createElement("div");
     row.className = "option";
+    // 価格帯で背景色を変えるためのクラスを付与
+    row.classList.add(`price-${o.price}`);
+    if (o.isSet) row.classList.add("is-set");
 
     const left = document.createElement("div");
     left.innerHTML = `
@@ -607,7 +654,7 @@ function render(){
 
   if (nyugakuFee>0) {
     const d = nyugakuFee - nyugakuAfter;
-    lines.push(line("入学金", nyugakuAfter));
+    lines.push(line("入学金", nyugakuFee));
     if (d>0) lines.push(discountLine("入学金割引", d));
   }
 
